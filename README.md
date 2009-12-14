@@ -10,7 +10,7 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-* Other extensions can extend the reader registration/preferences form with `ReaderController.add_form_partial('this/_partial')`
+* Other extensions can extend the reader registration/preferences form with `ReadersController.add_form_partial('this/form_additions_partial')`
 
 * Lots of little bugfixes thanks to radixhound
 

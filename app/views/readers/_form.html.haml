@@ -70,4 +70,4 @@
   = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
 - @form_partials.each do |partial|
-  = render :partial => partial
+  = render :partial => partial, :locals => { :form => f }
