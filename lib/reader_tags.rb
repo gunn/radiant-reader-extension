@@ -24,8 +24,13 @@ module ReaderTags
     end
   end
   tag 'site:url' do |tag|
-    if defined?(Site) && tag.locals.site.is_a(Site)
-      tag.locals.site.base_domain
+    if defined?(Site) && tag.locals.site.is_a?(Site)
+      # for the sake of links, prepend a "http://" to base_domain if it doesn't exist
+      if tag.locals.site.base_domain =~ /\Ahttps?:\/\//
+        tag.locals.site.base_domain
+      else
+        "http://#{tag.locals.site.base_domain}"
+      end
     else
       tag.locals.site[:url]
     end
