@@ -36,7 +36,6 @@ class ReaderExtension < Radiant::Extension
     config.gem 'sanitize'
     config.gem 'will_paginate', :version => '~> 2.3.11'
     config.extension 'share_layouts'
-    config.extension 'submenu'
   end
   
   def activate
@@ -58,16 +57,27 @@ class ReaderExtension < Radiant::Extension
       end
     end
     
-    admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
-    admin.tabs['Readers'].add_link('readers', '/admin/readers')
-    admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
+    if respond_to?(:tab)
+      tab("Readers") do
+        add_item("Reader list", "/admin/readers")
+        add_item "Invite reader", "/admin/readers/new"
+        add_item "Messages", "/admin/readers/messages"
+        add_item "New message", "/admin/readers/messages/new"
+      end
+    else
+      admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
+      if admin.tabs['Readers'].respond_to?(:add_link)
+        admin.tabs['Readers'].add_link('readers', '/admin/readers')
+        admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
+      end
+    end
     
-    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
-      "<span class='field_error'>#{html_tag}</span>" 
-    end 
+    # ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
+    #   "<span class='field_error'>#{html_tag}</span>" 
+    # end 
   end
   
   def deactivate
-    admin.tabs.remove "Readers"
+    admin.tabs.remove "Readers" unless respond_to? :tab
   end
 end
