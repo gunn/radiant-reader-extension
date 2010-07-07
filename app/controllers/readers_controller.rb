@@ -20,6 +20,9 @@ class ReadersController < ReaderActionController
       format.html { 
         if @reader.inactive? && @reader == current_reader
           redirect_to reader_activation_url
+        elsif session[:return_to]
+          redirect_to session[:return_to]
+          session[:return_to] = nil
         else
           render
         end
@@ -38,7 +41,7 @@ class ReadersController < ReaderActionController
       redirect_to url_for(current_reader) and return
     end
     @reader = Reader.new
-    session[:return_to] = request.referer
+    session[:return_to] ||= request.referer
     session[:email_field] = @email_field = @reader.generate_email_field_name
   end
   
