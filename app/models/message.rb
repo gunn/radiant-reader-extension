@@ -37,7 +37,7 @@ class Message < ActiveRecord::Base
   end
 
   def inactive_readers
-    possible_readers.inactive
+    Reader.inactive
   end
 
   def active_readers
